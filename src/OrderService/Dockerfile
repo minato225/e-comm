@@ -6,7 +6,7 @@ ARG BUILD_CONFIGURATION=Release
 
 COPY *.sln ./src/
 COPY ./src/OrderService/OrderService.csproj ./src/OrderService/
-WORKDIR app/src
+WORKDIR app/src/OrderService
 RUN dotnet restore
 
 COPY src/ ./src/
@@ -15,6 +15,7 @@ RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
+WORKDIR /app/src/OrderService
 RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/out /p:UseAppHost=false
 
 FROM base AS final

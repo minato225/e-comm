@@ -3,17 +3,12 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
-WORKDIR /src/src
+WORKDIR /src
 
-COPY *.sln/ .
-COPY OrderService/*.csproj ./OrderService/
-COPY InventoryService/*.csproj ./InventoryService/
-COPY NotificationService/*.csproj ./NotificationService/
-COPY PaymentService/*.csproj ./PaymentService/
-COPY SharedKernel/*.csproj ./SharedKernel/
+COPY ./scr .
 RUN dotnet restore "./OrderService/OrderService.csproj"
-COPY . .
 
+COPY . .
 RUN dotnet build ".OrderService/OrderService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
@@ -23,4 +18,4 @@ RUN dotnet publish ".OrderService/OrderService.csproj" -c $BUILD_CONFIGURATION -
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/out .
-ENTRYPOINT ["dotnet", "OrderService/OrderService.dll"]
+ENTRYPOINT ["dotnet", "OrderService.dll"]

@@ -3,6 +3,7 @@ WORKDIR /app
 
 # Копируем csproj и восстанавливаем зависимости
 COPY . .
+WORKDIR /src
 RUN dotnet restore
 
 # Копируем весь код и собираем проект

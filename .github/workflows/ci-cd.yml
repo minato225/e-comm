@@ -47,6 +47,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./src/OrderService/Dockerfile
+          file: ./src/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/e-comm-app:latest

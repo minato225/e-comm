@@ -1,6 +1,0 @@
-@e_comm_app_HostAddress = http://localhost:5235
-
-GET {{e_comm_app_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

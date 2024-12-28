@@ -4,7 +4,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 
-COPY . .
+COPY .src/ .
 RUN dotnet restore "./OrderService/OrderService.csproj"
 
 COPY . .

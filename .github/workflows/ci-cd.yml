@@ -49,4 +49,4 @@ jobs:
           context: ./src
           file: ./OrderService/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/order-service:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/e-comm-app:latest

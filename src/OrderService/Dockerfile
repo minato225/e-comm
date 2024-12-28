@@ -6,8 +6,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 COPY . .
-RUN echo pwd
-RUN dotnet restore "./OrderService/OrderService.csproj"
+RUN pwd
+RUN dotnet restore "./src/OrderService/OrderService.csproj"
 
 COPY . .
 WORKDIR "/src/OrderService"

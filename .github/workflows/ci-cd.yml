@@ -46,7 +46,7 @@ jobs:
       - name: 🚀 Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./src
-          file: ./OrderService/Dockerfile
+          context: .
+          file: ./src/OrderService/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/e-comm-app:latest

@@ -1,18 +1,25 @@
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+WORKDIR /app
+
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-WORKDIR /app
-
-# Копируем csproj и восстанавливаем зависимости
-COPY . .
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-RUN dotnet restore
 
-# Копируем весь код и собираем проект
+COPY OrderService/*.csproj ./OrderService/
+COPY InventoryService/*.csproj ./InventoryService/
+COPY NotificationService/*.csproj ./NotificationService/
+COPY PaymentService/*.csproj ./PaymentService/
+COPY SharedKernel/*.csproj ./SharedKernel/
+RUN dotnet restore "./OrderService/./OrderService.csproj"
 COPY . .
-WORKDIR /app/OrderService
-RUN dotnet publish -c Release -o out
+WORKDIR "/src/OrderService"
+RUN dotnet build "./OrderService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# Используем runtime образ для запуска
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./OrderService.csproj" -c $BUILD_CONFIGURATION -o /app/out /p:UseAppHost=false
+
+FROM base AS final
 WORKDIR /app
-COPY --from=build /app/OrderService/out ./
+COPY --from=publish /app/out .
 ENTRYPOINT ["dotnet", "OrderService.dll"]

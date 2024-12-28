@@ -10,7 +10,9 @@ RUN pwd
 RUN dotnet restore "./src/OrderService/OrderService.csproj"
 
 COPY . .
-WORKDIR "/src/OrderService"
+RUN pwd
+WORKDIR "./src/OrderService"
+RUN pwd
 RUN dotnet build "./OrderService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

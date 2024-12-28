@@ -1,0 +1,6 @@
+﻿services:
+  e-comm-app:
+    image: e-comm-app
+    build:
+      context: .
+      dockerfile: e-comm-app/Dockerfile

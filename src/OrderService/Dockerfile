@@ -3,20 +3,22 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
 
-COPY *.sln ./src/
-COPY ./src/OrderService/OrderService.csproj ./src/OrderService/
-WORKDIR app/src/OrderService
-RUN dotnet restore
+COPY . .
+RUN ls
+RUN pwd
+RUN dotnet restore "./src/OrderService/OrderService.csproj"
 
-COPY src/ ./src/
-WORKDIR /app/src/OrderService
-RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
+COPY . .
+RUN ls
+RUN pwd
+RUN dotnet build "./src/OrderService/OrderService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-WORKDIR /app/src/OrderService
-RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/out /p:UseAppHost=false
+WORKDIR /src/
+RUN dotnet publish "./src/OrderService/OrderService.csproj" -c $BUILD_CONFIGURATION -o /app/out /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

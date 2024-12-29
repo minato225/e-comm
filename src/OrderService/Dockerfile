@@ -14,7 +14,7 @@ RUN dotnet build "./src/OrderService/OrderService.csproj" -c $BUILD_CONFIGURATIO
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src/
-RUN dotnet publish "./src/OrderService/OrderService.csproj" -c $BUILD_CONFIGURATION -o /app/out /p:UseAppHost=false -p:PublishProfile=DefaultContainer
+RUN dotnet publish "./src/OrderService/OrderService.csproj" -c $BUILD_CONFIGURATION -o /app/out /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

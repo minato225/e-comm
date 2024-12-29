@@ -6,19 +6,15 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 COPY . .
-RUN ls
-RUN pwd
 RUN dotnet restore "./src/OrderService/OrderService.csproj"
 
 COPY . .
-RUN ls
-RUN pwd
 RUN dotnet build "./src/OrderService/OrderService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src/
-RUN dotnet publish "./src/OrderService/OrderService.csproj" -c $BUILD_CONFIGURATION -o /app/out /p:UseAppHost=false
+RUN dotnet publish "./src/OrderService/OrderService.csproj" -c $BUILD_CONFIGURATION -o /app/out /p:UseAppHost=false -p:PublishProfile=DefaultContainer
 
 FROM base AS final
 WORKDIR /app
